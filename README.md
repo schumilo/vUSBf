@@ -102,7 +102,7 @@ Take a look at help.txt or run vusbf with the parameter -h for help :-)
 BUGS
 ==========
 
-This version of the software just represents an early concept. There are some known bugs like (rare) deadlocks by using the python subprocess module for starting QEMU and the slow and memory-hungry generating of testcases. YMMV. We are working on these issues, so be sure you are using the newest version. Moreover the lack of USB-emulators is another point we are working on.
+This version of the software just represents an early concept. There are some known bugs like (rare) deadlocks by using the python subprocess module for starting QEMU and the slow and memory-hungry generating of testcases. We are working on these issues, so be sure you are using the newest version. Moreover the lack of USB-emulators is another point we are working on.
 
 Furthermore some inline comments were written in my native language (german). They will be translated later ;-) and the code will be more documented!
 
