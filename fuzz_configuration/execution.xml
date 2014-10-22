@@ -1,0 +1,12 @@
+<!-- fire-->
+<execution>
+	<execute name="ex1">
+        <testcase name="testcase_1"/>
+        <emulator name="enumeration" descriptor="desc3.txt" reload-vm="yes"/>
+    </execute>
+
+	<execute name="ex2">
+        <testcase name="testcase_2"/>
+        <emulator name="enumeration" descriptor="desc2.txt" reload-vm="yes"/>
+    </execute>
+</execution>

@@ -1,0 +1,32 @@
+<!-- combine tests and define testcase -->
+
+<testcases>
+	<testcase name="testcase_1">
+		<testunit type="parallel">
+			<test name="all_vender_product_ids"/>
+			<test name="all_class_ids"/>
+		</testunit>
+	</testcase>
+
+	<testcase name="testcase_2">
+		<testunit type="sequential">
+                	<test name="dev_desc_blength_invalid"/>
+                	<testunit type="parallel">
+                        	<test name="all_class_ids"/>
+                        	<test name="all_vender_product_ids"/>
+			</testunit>
+		</testunit>		
+	</testcase>
+
+
+
+	<testcase name="testcase_3">
+                <testunit type="parallel">
+                        <test name="halt_bug_test"/>
+                        <test name="all_class_ids"/>
+            <test name="dev_desc_blength_invalid"/>
+          </testunit>	
+	</testcase>
+</testcases>
+
+

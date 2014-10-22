@@ -1,0 +1,61 @@
+Usage: vusbf.py [Running Type] [Fuzzing Type] [Target Type]
+
+Target Specification:
+        -o <target.conf>:       name of a target configuration file (stored at ./configurations/)
+
+Fuzzing Specification:
+        -e <execution-name>:    name of an execution name (stored at execution.xml) which should be executed
+
+        (default xml files are stored in ./fuzz_configuration)
+        -ef <execution.xml>:    path of an alternativ execution-xml file
+        -tf <test.xml>:         path of an alternativ test-xml file
+        -cf <testcase.xml>:     path of an alternativ testcase-xml file
+
+        (the following options could be used multiple times. However it's not possible to used them with clustering options)
+        -n <execution-number>:  execute a specific test (could be useful for reproducing an error)
+        -nr <execution-range>:  same as described above, but specifices a range of numbers [NOT IMPLEMENTED YET :-)]
+
+N       -C                      calculating number of tests [NOT IMPLEMENTED YET :-)]
+
+Running Specification:
+
+        -eo <ip> <port> <payl>  firing specified payload
+	-w 			save payload (use with parameter -e and -n)
+        -sp <ip> <port>         single core mode (but sending data to an extern process)
+
+    (automatic mode)
+        -r                      single core mode
+        -rm                     multiprocessing mode
+
+        (clustering mode)
+        (Warning: These features are experimental and could cause deadlocks!)
+        -s <ip> <port>          starting a test-distributor-server
+        -sc <ip> <port>         starting a hybrid client-server [NOT IMPLEMENTED YET :-)]
+        -c <ip> <port>          starting a client
+
+        (Be careful! 4-8 processes per physical core seems to be the optimum number!)
+        -p                      specify number of processes
+
+Extras:
+        -l                      list all available payloads
+        -L                      list all supported emulators
+        -h                      print help message
+        -P <info-rate>          change info print out interval (default: 10sec) [NOT IMPLEMENTED YET :-)]
+        -sh                     shuffle job list
+        -rl                     only reload if needed
+
+Example:
+
+	WRITE PAYLOAD:
+		python vusbf.py -w -e ex1 -n 1 -n 2
+	LIST ALL AVAILABLE PAYLOADS:
+		python vusbf.py -l 
+	SEND PAYLOAD TO VM:
+		python vusbf.py -eo 127.0.0.1 1235 panic_1.obj
+	RUN SINGLECORE MODE (EXTERN VM):
+		python vusbf.py -sp 127.0.0.1 1235 -e ex1
+	RUN SINGLECORE MODE:
+		python vusbf.py -r -e ex1 -o ubuntu1404.config -rl
+	RUN MULTICORE MODE (20 PROCESSES):
+		python vusbf.py -rm -p 20 -e ex1 -o ubuntu1404.config -rl
+

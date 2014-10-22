@@ -1,0 +1,91 @@
+<!-- define atomic tests -->
+<atomic_testcases>
+
+	<atomic_test name="dev_desc_blength_invalid" type="fuzz">
+		<fuzz>
+			<packet name="USB_Interface_Descriptor"/>
+			<field name="bNumEndpoints"/>
+			<range><from>0</from><to>30</to></range>
+			<!--<value>254</value>
+			<value>0</value>	
+			<value>5</value>
+			<value>10</value>
+			<value>25</value>
+			<value>100</value>-->
+		</fuzz>
+	</atomic_test>
+
+        <atomic_test name="conf_bNum_Interface_invalid" type="fuzz">
+                <fuzz>
+                        <packet name="USB_Configuration_Descriptor"/>
+                        <field name="bNumInterfaces"/>
+                        <!--<value>254</value>-->
+                        <value>0</value>        
+                        <value>5</value>
+                        <value>10</value>
+                        <value>25</value>
+                        <value>100</value>
+                </fuzz>
+                
+        </atomic_test>
+
+    <atomic_test name="all_class_ids" type="fuzz">
+		<fuzz>
+			<packet name="ALL" />
+	               	<field name="bDeviceClass" />
+			<file path="../usb_ids/class.ids" type="hex"><column delimiter=" ">0</column></file>
+		</fuzz>
+        <fuzz>
+			<packet name="ALL" />
+	               	<field name="bInterfaceClass" />
+			<file path="../usb_ids/class.ids" type="hex"><column delimiter=" ">0</column></file>
+		</fuzz>
+    </atomic_test>
+
+
+    <atomic_test name="halt_bug_test" type="fuzz">
+                <fuzz>
+                        <packet name="ALL" />
+                        <field name="isVendor" />
+			<value>8013</value>
+                </fuzz>
+        <fuzz>
+                        <packet name="ALL" />
+                        <field name="idProduct" />
+			<value>12288</value>
+                </fuzz>
+    </atomic_test>
+	
+	<atomic_test name="all_vender_product_ids" type="fuzz">
+		<fuzz>
+			<packet name="ALL" />
+	               	<field name="isVendor" />
+			<file path="../usb_ids/vendor_product.ids" type="hex"><column delimiter=" ">0</column></file>
+		</fuzz>
+
+		<fuzz>
+			<packet name="ALL" />
+			<field name="idProduct" />
+                        <file path="../usb_ids/vendor_product.ids" type="hex"><column delimiter=" ">1</column></file>
+         </fuzz>
+	</atomic_test>
+
+
+	<atomic_test name="delete_all_config_desc" type="action">
+		<action type="delete">
+			<descriptor name="configuration" num="ALL"/>
+		</action>
+	</atomic_test>	
+
+	<atomic_test name = "add_new_config_desc" type="action">
+        	<action type="add">
+        		<descriptor name="configuration"/>
+			<field name="bLength" value="18" type="int"/>
+			<field name="bDescriptorType" value="0x1" type="hex"/>
+			<field name="bNumConfigurations" value="0" type="int"/>
+                </action>
+       	</atomic_test>
+
+	<!-- to be continued :-) -->
+
+</atomic_testcases>
