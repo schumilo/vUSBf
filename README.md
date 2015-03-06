@@ -10,9 +10,9 @@ vusbf-Framework
 	 / __/ /_/ / / /_/ /_/  __/ /
 	/_/  \__,_/ /___/___/\___/_/
 
-A KVM/QEMU based USB-fuzzing framework.
-Sergej Schumilo, OpenSource Training Spenneberg 2015
-Version: 0.2
+	A KVM/QEMU based USB-fuzzing framework.
+	Sergej Schumilo, OpenSource Training Spenneberg 2015
+	Version: 0.2
 
 GENERAL
 ===========
