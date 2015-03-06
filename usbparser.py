@@ -1,7 +1,12 @@
-# DATA PARSER 
-# (c) Sergej Schumilo
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
 
-import pdb
+    See the file LICENSE for copying permission.
+"""
+__author__ = 'Sergej Schumilo'
+
 from usbscapy import *
 import copy
 
@@ -70,6 +75,7 @@ class usbredir_parser(parser):
         #if header_layer.Hid == 150761568:
         #	print hexdump(Raw(raw))
         #	pdb.set_trace()
+        #	print "yo"
 
         if len(raw) == 12:
             return header_layer

@@ -1,0 +1,168 @@
+<atomic_testcases>
+	<atomic_test name="all_class_ids1" type="fuzz">
+		<fuzz>
+			<packet name="usb_device_descriptor" />
+	       		<field name="bDeviceClass" />
+			<file path="usb_ids/class.ids" type="hex"><column delimiter=" ">0</column></file>
+		</fuzz>
+       
+	</atomic_test>
+	
+	<atomic_test name="all_class_ids2" type="fuzz">
+                <fuzz>
+                        <packet name="usb_interface_descriptor" />
+                        <field name="bInterfaceClass" />
+                        <file path="usb_ids/class.ids" type="hex"><column delimiter=" ">0</column></file>
+                </fuzz>
+
+        </atomic_test>
+
+
+
+	<atomic_test name="all_vendor_ids" type="fuzz">
+		<fuzz>
+			<packet name="ALL" />
+	       		<field name="isVendor" />
+			<file path="usb_ids/vendor_product.ids" type="hex"><column delimiter=" ">0</column></file>
+		</fuzz>
+       
+	</atomic_test>
+
+	<atomic_test name="all_product_ids" type="fuzz">
+		<fuzz>
+			<packet name="ALL" />
+	      		<field name="idProduct" />
+			<file path="usb_ids/vendor_product.ids" type="hex"><column delimiter=" ">1</column></file>
+		</fuzz>
+	</atomic_test>
+
+
+	<atomic_test name="invalid_bNumEndpoints" type="fuzz">
+                <fuzz>
+                        <packet name="usb_interface_descriptor"/>
+                        <field name="bNumEndpoints"/>
+			<value>0</value>
+                        <value>2</value>
+                        <value>30</value>
+                        <value>31</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_bNumConfiguration" type="fuzz">
+                <fuzz>
+                        <packet name="usb_device_descriptor"/>
+                        <field name="bNumConfigurations"/>
+                        <value>0</value>
+                        <value>2</value>
+                        <value>30</value>
+                        <value>31</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>	
+
+        <atomic_test name="invalid_bMaxPacketSize" type="fuzz">
+                <fuzz>
+                        <packet name="usb_device_descriptor"/>
+                        <field name="bMaxPacketSize"/>
+                        <value>0</value>
+			<value>2</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+	<atomic_test name="invalid_wTotalLength" type="fuzz">
+                <fuzz>
+                        <packet name="usb_configuration_descriptor"/>
+                        <field name="wTotalLength"/>
+                        <value>0</value>
+                        <value>20</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+	<atomic_test name="invalid_bNumInterfaces" type="fuzz">
+                <fuzz>
+                        <packet name="usb_configuration_descriptor"/>
+                        <field name="bNumInterfaces"/>
+                        <value>0</value>
+                        <value>20</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_bmAttributes" type="fuzz">
+                <fuzz>
+                        <packet name="usb_configuration_descriptor"/>
+                        <field name="bmAttributes"/>
+                        <value>0</value>
+                        <value>137</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_bInterfaceNumber" type="fuzz">
+                <fuzz>
+                        <packet name="USB_Interface_Descriptor"/>
+                        <field name="bInterfaceNumber"/>
+                        <value>0</value>
+                        <value>137</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+
+        <atomic_test name="invalid_bAlternateSetting" type="fuzz">
+                <fuzz>
+                        <packet name="USB_Interface_Descriptor"/>
+                        <field name="bAlternateSetting"/>
+                        <value>0</value>
+                        <value>137</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_iInterface" type="fuzz">
+                <fuzz>
+                        <packet name="USB_Interface_Descriptor"/>
+                        <field name="iInterface"/>
+                        <value>0</value>
+                        <value>137</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_bEndpointAddress" type="fuzz">
+                <fuzz>
+                        <packet name="usb_endpoint_descriptor"/>
+                        <field name="bEndpointAddress"/>
+                        <value>0</value>
+                        <value>137</value>
+                        <value>255</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_wMaxPacketSize" type="fuzz">
+                <fuzz>
+                        <packet name="usb_endpoint_descriptor"/>
+                        <field name="wMaxPacketSize"/>
+                        <value>0</value>
+                        <value>255</value>
+                        <value>50000</value>
+                </fuzz>
+        </atomic_test>
+
+        <atomic_test name="invalid_EP_bLength" type="fuzz">
+                <fuzz>
+                        <packet name="usb_endpoint_descriptor"/>
+                        <field name="bLength"/>
+                        <value>0</value>
+                        <value>255</value>
+                        <value>12</value>
+                </fuzz>
+        </atomic_test>
+
+
+
+	
+</atomic_testcases>

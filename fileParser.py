@@ -1,10 +1,12 @@
-# Sergej Schumilo 2014
-# lsusb -v output descriptor parser
-# vusbf
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
 
-import sys, copy
+    See the file LICENSE for copying permission.
+"""
+
 from usbscapy import *
-
 
 class usbdescFileParser:
     descriptor_types = ["Device Descriptor:",
@@ -183,31 +185,7 @@ class usbdescFileParser:
         endpoint_info.interface = ep_info_interface
         endpoint_info.max_packet_size = ep_info_max_packet_size
 
-        #print len(str(endpoint_info))
-        #endpoint_info.show()
-
-        #interface_info.show()
-        #print len(str(interface_info))
-
-        #scapyPacket.show()
-
-        #devDesc[0].show()
-        #for confDesc in devDesc[1]:
-        #	confDesc[0].show()
-        #	for ifDesc in confDesc[1]:
-        #			ifDesc[0].show()
-        #			for e in ifDesc[1]:
-        #				e.show()
-
-        #devDesc.show()
-        #confDesc[0].show()
-        #for e in confDesc[1]:
-        #		e[0].show()
-        #			for el in e[1]:
-        #				el.show()
         return devDesc, confDesc, connectPacket, interface_info, endpoint_info
-
-    # return scapyPacket, connectPacket, interface_info, endpoint_info
 
     def __parser(self, desc, data):
         data = data.split("\n")
@@ -252,7 +230,6 @@ class usbdescFileParser:
                     split[0] = "iSerialNumber"
 
                 if split[0] == "bDescriptorType":
-                    #print split[1]
                     pass
 
                 setattr(desc, split[0], split[1])
@@ -296,6 +273,5 @@ class usbdescFileParser:
                 desc.bDescriptorType2 = 34
                 return desc
 
-
-# test = usbdescFileParser("../../desc3.txt").parse()
+#test = usbdescFileParser("./dev_desc/desc3.txt").parse()
 

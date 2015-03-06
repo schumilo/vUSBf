@@ -1,4 +1,4 @@
-Speed High
+Speed Full
 Bus 001 Device 043: ID 1307:0165 Transcend Information, Inc. 2GB/4GB Flash Drive
 Device Descriptor:
   bLength                18

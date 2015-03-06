@@ -1,4 +1,0 @@
-delete		(loesche einen angegebene Zweig im Descriptor und berechne alle Laengenfelder neu)
-add		(fuege ein Zweig neu hinzu, wichtig ist hierbei das die Feldinhalte auch definiert werden sollten - oder Standartwerte nehmen?)
-modify		(verschieben oder aehnliches? ggf unnoetig)
-copy		(siehe oben)

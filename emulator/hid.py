@@ -1,11 +1,17 @@
-import os.path, sys, time, random
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
 
-from emulator import emulator
+    See the file LICENSE for copying permission.
+"""
+__author__ = 'Sergej Schumilo'
+
+import os.path, sys
 from enumeration import enumeration
 
 sys.path.append(os.path.abspath('../'))
 from usbparser import *
-from fileParser import *
 from descFuzzer import *
 
 
@@ -39,16 +45,16 @@ class hid(enumeration):
         packet_length = 0
         extra_payload = None
 
-	try:
-	    descriptor_request = scapy_data.value >> (8)
+        try:
+            descriptor_request = scapy_data.value >> (8)
             descriptor_num = scapy_data.value % 256
             request = scapy_data.request
 
-	    # report request
+            # report request
             if request == 1:
                 report = ""
                 for i in range(scapy_data.length):
-                    report += chr(random.randint(0,255))
+                    report += chr(random.randint(0, 255))
                 scapy_data.HLength = 10 + scapy_data.length
                 return (scapy_data / extra_payload)
 
@@ -59,7 +65,7 @@ class hid(enumeration):
                 extra_payload = self.report_desc
                 return (scapy_data / extra_payload)
 
-	    else:
-		return super(hid, self)._calc_response(data)
-	except:
-	    return super(hid, self)._calc_response(data)
+            else:
+                return super(hid, self)._calc_response(data)
+        except:
+            return super(hid, self)._calc_response(data)

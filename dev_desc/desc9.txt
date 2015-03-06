@@ -1,0 +1,490 @@
+Speed High
+Bus 004 Device 003: ID 0bdb:1911
+Device Descriptor:
+  bLength                 18
+  bDescriptorType          1
+  bcdUSB                2.00
+  bDeviceClass             2 Communications
+  bDeviceSubClass          0
+  bDeviceProtocol          0
+  bMaxPacketSize0         64
+  idVendor            0x0bdb
+  idProduct           0x1911
+  bcdDevice             0.00
+  iManufacturer            1
+  iProduct                 2
+  iSerial                  3
+  bNumConfigurations       3
+Configuration Descriptor:
+  bLength                  9
+  bDescriptorType          2
+  wTotalLength           371
+  bNumInterfaces          11
+  bConfigurationValue      1
+  iConfiguration           4
+  bmAttributes          0xe0
+    Self Powered
+    Remote Wakeup
+  bMaxPower                0mA
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         0
+  bAlternateSetting        0
+  bNumEndpoints            0
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       8
+  bInterfaceProtocol       0
+  iInterface               5
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         1
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       2
+  bInterfaceProtocol       1
+  iInterface               6
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x8a  EP 10 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         2
+  bAlternateSetting        0
+  bNumEndpoints            2
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface               7
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x01  EP 1 OUT
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x81  EP 1 IN
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         3
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       2
+  bInterfaceProtocol       1
+  iInterface               8
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x89  EP 9 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         4
+  bAlternateSetting        0
+  bNumEndpoints            2
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface               9
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x02  EP 2 OUT
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x82  EP 2 IN
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         5
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       9
+  bInterfaceProtocol       1
+  iInterface              10
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x88  EP 8 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         6
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass      13
+  bInterfaceProtocol       0
+  iInterface              11
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x86  EP 6 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize           8
+  bInterval                7
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         7
+  bAlternateSetting        0
+  bNumEndpoints            0
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface              14
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         8
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       9
+  bInterfaceProtocol       1
+  iInterface              16
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x87  EP 7 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         9
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       2
+  bInterfaceProtocol       1
+  iInterface              17
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x84  EP 4 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber        10
+  bAlternateSetting        0
+  bNumEndpoints            2
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface              18
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x03  EP 3 OUT
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x83  EP 3 IN
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Configuration Descriptor:
+  bLength                  9
+  bDescriptorType          2
+  wTotalLength           311
+  bNumInterfaces           9
+  bConfigurationValue      2
+  iConfiguration          19
+  bmAttributes          0xe0
+    Self Powered
+    Remote Wakeup
+  bMaxPower                0mA
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         0
+  bAlternateSetting        0
+  bNumEndpoints            0
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       8
+  bInterfaceProtocol       0
+  iInterface               5
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         1
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       2
+  bInterfaceProtocol       1
+  iInterface               6
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x8a  EP 10 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         2
+  bAlternateSetting        0
+  bNumEndpoints            2
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface               7
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x01  EP 1 OUT
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x81  EP 1 IN
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         3
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       2
+  bInterfaceProtocol       1
+  iInterface               8
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x89  EP 9 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         4
+  bAlternateSetting        0
+  bNumEndpoints            2
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface               9
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x02  EP 2 OUT
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x82  EP 2 IN
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         5
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       9
+  bInterfaceProtocol       1
+  iInterface              10
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x88  EP 8 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         6
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass      13
+  bInterfaceProtocol       0
+  iInterface              11
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x86  EP 6 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize           8
+  bInterval                7
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         7
+  bAlternateSetting        0
+  bNumEndpoints            0
+  bInterfaceClass         10 Data
+  bInterfaceSubClass       0
+  bInterfaceProtocol       0
+  iInterface              14
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         8
+  bAlternateSetting        0
+  bNumEndpoints            1
+  bInterfaceClass          2 Communications
+  bInterfaceSubClass       9
+  bInterfaceProtocol       1
+  iInterface              16
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x87  EP 7 IN
+  bmAttributes             3
+    Transfer Type             Interrupt
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize          16
+  bInterval                8
+Configuration Descriptor:
+  bLength                  9
+  bDescriptorType          2
+  wTotalLength            32
+  bNumInterfaces           1
+  bConfigurationValue      3
+  iConfiguration          20
+  bmAttributes          0xe0
+    Self Powered
+    Remote Wakeup
+  bMaxPower                0mA
+Interface Descriptor:
+  bLength                  9
+  bDescriptorType          4
+  bInterfaceNumber         0
+  bAlternateSetting        0
+  bNumEndpoints            2
+  bInterfaceClass          8 Mass Storage
+  bInterfaceSubClass       6
+  bInterfaceProtocol      80
+  iInterface              21
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x85  EP 5 IN
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0
+Endpoint Descriptor:
+  bLength                  7
+  bDescriptorType          5
+  bEndpointAddress      0x05  EP 5 OUT
+  bmAttributes             2
+    Transfer Type             Bulk
+    Synch Type                None
+    Usage Type                Data
+  wMaxPacketSize         512
+  bInterval                0

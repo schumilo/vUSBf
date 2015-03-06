@@ -1,0 +1,11 @@
++---------------------------------------------------------+
+Test #1:
+        FT: 5163        idProduct: ALL
+        FT: 1   isVendor: ALL
+        FT: 0   bDeviceClass: usb_device_descriptor
+        FT: 0   bInterfaceClass: usb_interface_descriptor
+        FT: 0   bNumEndpoints: usb_interface_descriptor
+{'descriptor': 'desc2.txt', 'emulator': 'enumeration', 'reload-vm': 'no'}
+KEY:
+MQoKNTE2M/9pZFByb2R1Y3T/QUxMCjH/aXNWZW5kb3L/QUxMCjD/YkRldmljZUNsYXNz/3VzYl9kZXZpY2VfZGVzY3JpcHRvcgow/2JJbnRlcmZhY2VDbGFzc/91c2JfaW50ZXJmYWNlX2Rlc2NyaXB0b3IKMP9iTnVtRW5kcG9pbnRz/3VzYl9pbnRlcmZhY2VfZGVzY3JpcHRvcgoKZGVzY3JpcHRvcv9kZXNjMi50eHQKZW11bGF0b3L/ZW51bWVyYXRpb24KcmVsb2FkLXZt/25vCg==
++---------------------------------------------------------+

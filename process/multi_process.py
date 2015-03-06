@@ -1,111 +1,135 @@
-# Sergej Schumilo 2014
-#
-#
-from multiprocessing import Process, Lock, Value, Queue
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
 
-from task_pool import *
+    See the file LICENSE for copying permission.
+"""
+__author__ = 'Sergej Schumilo'
+
+from multiprocessing import Process, Value, Queue, Semaphore
 from qemu import qemu
 from process import process
 from print_performance_process import *
-from fuzz_configuration.xml_parser import xml_parser
+from test_generation.XMLParser import xml_parser
 import signal
 import time
 import os
-from random import shuffle
+sys.path.append(os.path.abspath('../'))
+import config
 
 process_list = None
 printPerf_process = None
 network_requester_process = None
 
 
-def signal_handler(signal, frame):
+def signal_handler(a,b):
     kill_all()
 
 
 def kill_all():
-    if process_list != None:
+    global process_list, printPerf_process, network_requester_process
+    if process_list is not None:
         for p in process_list:
             if p.is_alive:
                 if type(p.pid) == int:
                     os.kill(p.pid, signal.SIGINT)
 
-    if printPerf_process != None:
+    if printPerf_process is not None:
         if printPerf_process.is_alive:
             if type(printPerf_process.pid) == int:
                 os.kill(printPerf_process.pid, signal.SIGINT)
 
-    if network_requester_process != None:
+    if network_requester_process is not None:
         if network_requester_process.is_alive:
             if type(network_requester_process.pid) == int:
                 os.kill(network_requester_process.pid, signal.SIGINT)
     sys.exit(0)
 
 
-def multi_processing(process_number, target_object, exec_name, exec_list, exec_path, testcase_path, test_path, reload_test, shuffle_test):
-
+def multi_processing(process_number, target_object, exec_name, exec_list, exec_path, testcase_path, test_path,
+                     reload_test, shuffle_test, payloads=None, file_name=None):
+    global process_list
+    global printPerf_process
     signal.signal(signal.SIGINT, signal_handler)
-    number_of_threads = process_number
-    path_prefix = ""
-    jobs = xml_parser(path_prefix + test_path, path_prefix + testcase_path, path_prefix + exec_path).calc_tests(exec_name)
-    if shuffle_test:
-        shuffle(jobs)
 
-    new_data = []
-    if exec_list != []:
-        new_data = []
-        for e in exec_list:
-            new_data.append(jobs[e])
-        jobs = new_data
+    path_prefix = "test_generation/"
+    exec_path_value = path_prefix + "execution.xml"
+    if exec_path != "":
+        exec_path_value = exec_path
 
-    tasks_pool = task_pool(50, 2000, 2, 0)
-    max_tasks = len(jobs)
+    testcase_path_value = path_prefix + "testcase.xml"
+    if testcase_path != "":
+        testcase_path_value = testcase_path
 
+    test_path_value = path_prefix + "test.xml"
+    if test_path != "":
+        test_path_value = test_path
+
+    if payloads is None:
+        xml_tree = xml_parser(test_path_value, testcase_path_value, exec_path_value)
+        xml_tree.calc_tests(exec_name)
+
+        print "[*] Number of tests: " + str(xml_tree.get_number_of_elements())
+        xml_tree.print_tree()
+    else:
+        xml_tree = payloads
+        print "[*] Number of tests: " + str(xml_tree.get_number_of_elements())
+
+    max_tasks = xml_tree.get_number_of_elements()
     sm_num_of_tasks = Value('i', 0)
-
-    i = 0
 
     info_queue = Queue()
     queue_list = []
     process_list = []
     qemu_list = []
 
-    for i in range(number_of_threads):
+    process_lock = Semaphore(process_number)
+    for i in range(process_number):
+        process_lock.acquire()
+    sem = Semaphore(config.PROCESS_REPAIR_SEMAPHORE)
+
+    for i in range(process_number):
         queue_list.append(Queue())
-	qemu_object = qemu("configurations/" + target_object, "", "", "/tmp/vusbf_" + str(i) + "_socket", i, 0)
+        qemu_object = qemu("configurations/" + target_object, "/tmp/vusbf_" + str(i) + "_socket", i)
         qemu_list.append(qemu_object)
-#        qemu_object.start()
-        #time.sleep(0.1)
-        process_list.append(Process(target=process, args=("t" + str(i), qemu_object, sm_num_of_tasks, i, info_queue, queue_list[i], reload_test)))
+        if process_number == 1 and file_name is not None:
+            process_list.append(Process(target=process, args=(
+                "t" + str(i), qemu_object, sm_num_of_tasks, i, info_queue, queue_list[i], reload_test, sem, process_lock), kwargs={"file_postfix_name": file_name}))
+        else:
+            process_list.append(Process(target=process, args=(
+                "t" + str(i), qemu_object, sm_num_of_tasks, i, info_queue, queue_list[i], reload_test, sem, process_lock)))
 
-    printPerf_process = Process(target=printPerf, args=(max_tasks, 10, sm_num_of_tasks))
+    printPerf_process = Process(target=printPerf, args=(max_tasks, sm_num_of_tasks))
 
+    j = 0
+    print "[*] Starting processes..."
     for e in process_list:
         e.start()
-
-    payload_queue = Queue()
-    request_queue = Queue()
-
-
+        time.sleep(0.1)
+    print "[*] Preparing processes..."
+    time.sleep(config.PROCESS_STARTUP_TIME)
     num_of_fin = 0
     num_of_processes = len(process_list)
-
-    printPerf_started = False
-
-    tasks_pool.add_tasks(jobs)
+    j = 0
     while True:
         if num_of_fin == num_of_processes:
             break
+        if j == num_of_processes-num_of_fin:
+            print "[*] Done..."
+            printPerf_process.start()
+            for i in range(num_of_processes):
+                time.sleep(config.PROCESS_STARTUP_RATE)
+                process_lock.release()
 
         process_num = info_queue.get()
 
-        data = tasks_pool.get_more_tasks(200)
-        if data != None:
-            #print len(data)
+        data = xml_tree.get_data_chunk(config.NUMBER_OF_JOBS_PER_PROCESS)
+        if data is not None:
             queue_list[process_num].put(data)
-            if not printPerf_started:
-                printPerf_process.start()
-                printPerf_started = True
+            j += 1
         else:
             num_of_fin += 1
             queue_list[process_num].put(None)
 
+    print "[*] Finished..."

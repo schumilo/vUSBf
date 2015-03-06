@@ -1,0 +1,16 @@
+Version 0.2:
+
+- code clean up
+- complete rewrite of testcase generation related code (generation works now on the fly, less memory usage)
+- add configuration file which includes all "tweakable" variables
+- deadlocks during long runtimes fixed
+- change payload format (base64 strings)
+- add tools for porting old payloads to new payload format
+- add pdb interface for certain processes
+- optimise performance
+- add execute payload without external QEMU process
+- add nightly windows support
+
+Version 0.1:
+
+- initial commit

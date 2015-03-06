@@ -15,13 +15,13 @@ Fuzzing Specification:
         -n <execution-number>:  execute a specific test (could be useful for reproducing an error)
         -nr <execution-range>:  same as described above, but specifices a range of numbers [NOT IMPLEMENTED YET :-)]
 
-N       -C                      calculating number of tests [NOT IMPLEMENTED YET :-)]
-
 Running Specification:
 
-        -eo <ip> <port> <payl>  firing specified payload
-	-w 			save payload (use with parameter -e and -n)
-        -sp <ip> <port>         single core mode (but sending data to an extern process)
+        -eon <ip> <port> <payl> sending specified payload (NETWORK)
+        -eo  <payl>             sending specified payload
+            -v1                 verbose level 1 (output device descriptor & control data)
+            -v2                 verbose level 2 (raw redir data)
+        -sp <ip> <port>         single core mode (but sending data to an external process)
 
     (automatic mode)
         -r                      single core mode
@@ -32,28 +32,25 @@ Running Specification:
         -s <ip> <port>          starting a test-distributor-server
         -sc <ip> <port>         starting a hybrid client-server [NOT IMPLEMENTED YET :-)]
         -c <ip> <port>          starting a client
-
-        (Be careful! 4-8 processes per physical core seems to be the optimum number!)
         -p                      specify number of processes
 
 Extras:
         -l                      list all available payloads
         -L                      list all supported emulators
         -h                      print help message
-        -P <info-rate>          change info print out interval (default: 10sec) [NOT IMPLEMENTED YET :-)]
         -sh                     shuffle job list
-        -rl                     only reload if needed
+        -rl                     reload mode (disable burst mode)
 
 Example:
 
-	WRITE PAYLOAD:
-		python vusbf.py -w -e ex1 -n 1 -n 2
 	LIST ALL AVAILABLE PAYLOADS:
 		python vusbf.py -l 
-	SEND PAYLOAD TO VM:
-		python vusbf.py -eo 127.0.0.1 1235 panic_1.obj
+	SEND PAYLOAD TO EXTERNAL QEMU INSTANCE:
+		python vusbf.py -eon 127.0.0.1 1235 panic_1.obj
+	EXECUTE PAYLOAD:
+		python vusbf.py -eo panic_1.obj -o ubuntu1404.config -v1
 	RUN SINGLECORE MODE (EXTERN VM):
-		python vusbf.py -sp 127.0.0.1 1235 -e ex1
+		python vusbf.py -sp 127.0.0.1 1235 -e ex2
 	RUN SINGLECORE MODE:
 		python vusbf.py -r -e ex1 -o ubuntu1404.config -rl
 	RUN MULTICORE MODE (20 PROCESSES):

@@ -1,11 +1,33 @@
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
+
+    See the file LICENSE for copying permission.
+"""
+__author__ = 'Sergej Schumilo'
+
 from protocol import *
 import select
 import threading
 from threading import Lock
 import cPickle
-
+import config
+import signal
 
 exit_flag = False
+
+controller = None
+timeout = 0
+
+def signal_handler(signal, frame):
+    global timeout, controller
+    print "SIGHANDLER"
+    if controller is not None:
+        try:
+            controller.stop_sync_callback()
+        finally:
+            print "Exit..."
 
 class network_task_distributor:
     number_of_finished_tasks = 0
@@ -96,7 +118,6 @@ class network_task_distributor:
 
             fd = select.select([self.connection], [], [], self.sync_timeout)
             fd = fd[0]
-            # print fd
             if fd:
                 if exit_flag:
                     return
@@ -106,6 +127,7 @@ class network_task_distributor:
                         self.connection_lock.acquire()
 
                         data = fd[0].recv(8)
+                        #print "DATA: "+ str(data)
                         #print len(data)
                         #data.show()
                         if not len(data) == 8:
@@ -113,7 +135,8 @@ class network_task_distributor:
                             self.connection_lock.release()
                             break
                         header = vusbf_proto_header(data)
-                        #header.show()
+                        if config.CLUSTERING_DEBUG_SERVER:
+                            header.show()
 
                         if header.Type is None:
                             # atomic block end
@@ -157,9 +180,12 @@ class network_task_distributor:
                         self.connection_lock.release()
 
                     except:
+                        print "Oops"
                         #global exit_flag
                         #exit_flag = True
                         break
+                else:
+                    print "NOPE"
 
 
     def start_sync_callback(self):
@@ -204,29 +230,30 @@ class network_task_distributor:
 
 # data = fuzzer(100).gen_data(sys.argv[3], sys.argv[4])
 
-# INFO QUEUE NEGATIVE WERT -> ENTSPRICHT DER ANZAHL DER BENOETIGTEN PAKETE
+# INFO QUEUE NEGATIVE WERT -> ENTSPRICHT DER ANZAHL DER BENOETIGTEN PACKETE
 # WARTE AUF DATEN
 # RACE CONDITION MOEGLICH...DUERFTE ABER ZU KEINEN PROBLEMEN FUEHREN
 
 def process(Connection, sync_timeout, md5_vm, md5_overlay, sm_num_of_fin_tasks, info_queue, payload_queue, verbose_level):
-    if verbose_level != 0:
-        print "START"
+    global timeout, controller
+    signal.signal(signal.SIGTERM, signal_handler)
+    timeout = sync_timeout
+    if config.CLUSTERING_DEBUG_SERVER:
+        verbose_level = 5
     controller = network_task_distributor(Connection, sync_timeout, md5_vm, md5_overlay, sm_num_of_fin_tasks,
                                           info_queue, payload_queue, verbose_level)
     controller.start_sync_callback()
-
     controller.connection_loop()
     #time.sleep(100)
     #print "EXXXX"
     controller.stop_sync_callback()
-    if verbose_level != 0:
-        print "EXIT"
+
 
 
 # PROCESS KOMMUNIKATION:
 # Positive worker_id -> Datenanfrage
 # Negative worker_id -> Daten werden zurueck gegeben (communications error)
-# sharedmemory Variable dient zum Abgleich der Anzahl der aktuell erledigen Aufgaben
+# sharedmemory variable dient zum Abgleich der Anzahl der aktuell erledigen Aufgaben
 # Datenqueue (max_packet x max_num_of_packtes) 
 
 

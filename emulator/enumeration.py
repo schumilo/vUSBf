@@ -1,3 +1,12 @@
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
+
+    See the file LICENSE for copying permission.
+"""
+__author__ = 'Sergej Schumilo'
+
 import os.path, sys, time, random
 
 from emulator import emulator
@@ -71,7 +80,6 @@ class enumeration(emulator):
             packet_length = len(str(extra_payload))
             #extra_payload.show()
 
-
         # redir stuff
         scapy_data.HLength = 10 + len(str(extra_payload))
         scapy_data.status = 0
@@ -81,5 +89,4 @@ class enumeration(emulator):
             scapy_data.HLength = 10
             return scapy_data
 
-        #scapy_data.show()
         return (scapy_data / extra_payload)

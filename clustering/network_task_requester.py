@@ -1,11 +1,18 @@
-import socket
-import sys
-import time
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
+
+    See the file LICENSE for copying permission.
+"""
+__author__ = 'Sergej Schumilo'
+
 from protocol import *
 import signal
 from threading import Lock
 import threading
 import select
+import config
 
 Socket = None
 controller = None
@@ -13,9 +20,9 @@ controller = None
 # currently not in usage :-)
 def signal_handler(signal, frame):
     global controller
-    if controller != None:
-        controller.close_connection()
-        sys.exit(0)
+    if controller is not None:
+        controller.kill_listing_thread()
+    sys.exit(0)
 
 
 class network_task_requester():
@@ -114,9 +121,7 @@ class network_task_requester():
         while True:
 
             fd = select.select([self.connection], [], [], 0.5)[0]
-            #print fd
             if self.cancel:
-                #print "EXIT"
                 return
             if fd:
                 if len(fd) > 0:
@@ -131,7 +136,8 @@ class network_task_requester():
                         self.connection_lock.release()
                         return
                     header = vusbf_proto_header(raw_data)
-                    #header.show()
+                    if config.CLUSTERING_DEBUG_CLIENT:
+                        header.show()
 
                     # task response
                     if header.Type == 2:
@@ -221,7 +227,8 @@ class network_task_requester():
 
 
 def start_network_task_requester(server, port, md5_vm, md5_overlay, sm_num_of_fin_tasks, info_queue, data_queue, request_queue, worker_id, verbose_level):
-    signal.signal(signal.SIGINT, signal_handler)
+    global controller
+    signal.signal(signal.SIGTERM, signal_handler)
     controller = network_task_requester(server, port, md5_vm, md5_overlay, sm_num_of_fin_tasks, info_queue, data_queue, worker_id, verbose_level)
     #print "START"
     controller.start_listing_thread()
@@ -232,6 +239,7 @@ def start_network_task_requester(server, port, md5_vm, md5_overlay, sm_num_of_fi
     # RECV DATA AND PUT THEM TO DATA QUEUE
     while True:
         value = request_queue.get()
+        #print value
         #print "REQUEST"
         if value == 0:
             controller.close()

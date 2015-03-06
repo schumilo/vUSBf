@@ -1,0 +1,68 @@
+<!-- combine tests and define testcase -->
+
+<testcases>
+
+	<testcase name="testcase_1">
+		<testunit type="chain">
+			<!-- Number: 5 -->
+			<test name="invalid_bAlternateSetting"/>
+          	<testunit type="product">
+				<test name="invalid_wTotalLength"/>
+				<test name="invalid_bNumInterfaces"/>
+                <test name="invalid_bAlternateSetting"/>
+                <test name="invalid_iInterface"/>
+                <test name="invalid_wMaxPacketSize"/>
+                <test name="all_class_ids1"/>
+			</testunit>
+		</testunit>		
+	</testcase>
+	
+	<testcase name="testcase_3">
+		<testunit type="product">
+			<!-- number of elements: 15661 -->
+			<testunit type="linked">
+				<test name="all_product_ids"/>	
+				<test name="all_vendor_ids"/>
+			</testunit>
+			<!-- number of elements: 19 -->
+			<testunit type="linked">
+				<test name="all_class_ids1"/>
+				<test name="all_class_ids2"/>
+				
+			</testunit>
+	
+			
+	
+			<!-- number of elements: 255 -->
+			<testunit type="chain">
+				<test name="invalid_bNumEndpoints"/>
+                                <test name="invalid_bNumConfiguration"/>
+                                <!-- <test name="invalid_bMaxPacketSize"/> -->
+                                <test name="invalid_wTotalLength"/>
+                                <test name="invalid_bNumInterfaces"/>
+                                <test name="invalid_bmAttributes"/>
+                                <test name="invalid_bInterfaceNumber"/>
+                                <test name="invalid_bAlternateSetting"/>
+                                <test name="invalid_iInterface"/>
+                                <!-- <test name="invalid_bEndpointAddress"/> --> 
+                                <test name="invalid_wMaxPacketSize"/>
+                                <test name="invalid_EP_bLength"/>
+			</testunit>
+			
+			
+		</testunit>		
+	</testcase>
+
+        <testcase name="testcase_4">
+                <testunit type="product">
+                        <!-- number of elements: 15661 -->
+                        <testunit type="linked">
+                                <test name="all_product_ids"/>
+                                <test name="all_vendor_ids"/>
+                        </testunit>
+			<test name="all_class_ids"/>
+                </testunit>
+        </testcase>
+</testcases>
+
+

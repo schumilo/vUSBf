@@ -1,49 +1,21 @@
-# QEMU Basis Klasse
+"""
+    vUSBf: A KVM/QEMU based USB-fuzzing framework.
+    Copyright (C) 2015  Sergej Schumilo, OpenSource Security Ralf Spenneberg
+    This file is part of vUSBf.
+
+    See the file LICENSE for copying permission.
+"""
 
 import shutil
-import subprocess
-import time
-import os.path
 from usbEmulator import *
-import hashlib
-from debug import *
-import fcntl
-
-from select import select
-
-
-from monitor.monitor import *
 from monitor.linux_monitor import *
-
+import config
 
 
 class qemu:
-    # defined verbose level distinctions in this class
-    VERBOSE_LEVEL_PRINT_ERROR_MESSAGES = 4
-    VERBOSE_LEVEL_PRINT_RECV_DATA = 3
-    VERBOSE_LEVEL_PRINT_SEND_DATA = 2
-    VERBOSE_LEVEL_PRINT_INFO = 1
-    VERBOSE_LEVEL_PRINT_NOTHING = 0
-
-    emu = None
-    monitor = None
-
     file_name = ""
-
-
-    config_qemu_bin = None
-    config_kvm = None
-    config_memory_size = None
-    config_ram_file = None
-    config_overlay = None
-    config_usb_device_type = None
-    config_snapshot = None
-    config_qemu_extra = None
-    config_overlay_folder = None
-
     config_args = ["qemu_bin", "kvm", "memory", "ram_file", "overlay_file", "device_type", "snapshot", "qemu_extra",
                    "overlay_folder"]
-
     call = ""
 
     def __read_config(self, config_file):
@@ -64,7 +36,7 @@ class qemu:
 
                     # kvm support
                     elif arg == self.config_args[1]:
-                        if (value == "yes" or value == "no"):
+                        if value == "yes" or value == "no":
                             if value == "yes":
                                 self.config_kvm = True
                             else:
@@ -93,7 +65,7 @@ class qemu:
                                                                                                                 " ")
                     # overlay folder
                     elif arg == self.config_args[8]:
-                        #print value
+                        # print value
                         if os.path.isdir(value):
                             self.config_overlay_folder = value
                             if self.config_overlay_folder.endswith("/"):
@@ -102,14 +74,14 @@ class qemu:
         finally:
             f.close()
 
-        if self.config_qemu_bin == None \
-                or self.config_kvm == None \
-                or self.config_memory_size == None \
-                or self.config_ram_file == None \
-                or self.config_overlay == None \
-                or self.config_usb_device_type == None \
-                or self.config_overlay_folder == None \
-                or self.config_snapshot == None:
+        if self.config_qemu_bin is None \
+                or self.config_kvm is None \
+                or self.config_memory_size is None \
+                or self.config_ram_file is None \
+                or self.config_overlay is None \
+                or self.config_usb_device_type is None \
+                or self.config_overlay_folder is None \
+                or self.config_snapshot is None:
             print "READ CONFIG ERROR:"
             print self.config_qemu_bin
             print self.config_kvm
@@ -134,7 +106,6 @@ class qemu:
         call += " -device " + self.config_usb_device_type
         call += " -loadvm " + self.config_snapshot
         call += " -serial mon:stdio"
-        # call += " -monitor stdio"
         call += " -device usb-redir,chardev=usbchardev,debug=0 "
 
         if type(address) == list and len(address) == 2:
@@ -146,19 +117,18 @@ class qemu:
         elif type(address) == str:
             call += " -chardev socket,server,id=usbchardev,nowait"
             call += ",path="
-            #os.remove(address)
             call += address
         else:
             print "E"
             return None
-
         call += " " + self.config_qemu_extra
-
         return call
 
-    # DATA_SOCKET LOESCHEN
-    def __init__(self, config_file, log_file, data_socket, address, instance_id, verbose_level):
+    # def __init__(self, config_file, log_file, data_socket, address, instance_id, verbose_level)
+    def __init__(self, config_file, address, instance_id):
 
+        self.process = None
+        self.monitor = None
         self.instance_id = instance_id
 
         if not self.__read_config(config_file):
@@ -167,102 +137,62 @@ class qemu:
         # copy overlay file
         self.config_overlay_backup = self.config_overlay
 
-        if os.path.isfile(self.config_overlay_folder + "/" + "overlay_" + str(self.instance_id) + ".qcow2"):
+        if os.path.isfile(self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX):
 
-            # md5_original = hashlib.md5(open(self.config_overlay, 'rb').read()).digest()
-            #md5_copy = hashlib.md5(open(self.config_overlay_folder + "/" + "overlay_" + str(self.instance_id) + ".qcow2", 'rb').read()).digest()
-
-            #if not str(md5_original) == str(md5_copy):
-            #        if verbose_level >= self.VERBOSE_LEVEL_PRINT_INFO:
-            #                print "copy overlay-file"
-            pass
-            #shutil.copy(self.config_overlay,
-            #           self.config_overlay_folder + "/" + "overlay_" + str(self.instance_id) + ".qcow2")
-            #else:
-            #        if verbose_level >= self.VERBOSE_LEVEL_PRINT_INFO:
-            #                print "md5 check: okay"
+            os.remove(self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX)
+            shutil.copy(self.config_overlay,
+                        self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX)
 
         else:
-            # if verbose_level >= self.VERBOSE_LEVEL_PRINT_INFO:
-            #        print "copy overlay-file"
+            if config.VERBOSE_LEVEL >= config.VERBOSE_LEVEL_PRINT_INFO:
+                print "copy overlay-file"
 
             shutil.copy(self.config_overlay,
-                        self.config_overlay_folder + "/" + "overlay_" + str(self.instance_id) + ".qcow2")
+                        self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX)
 
-        self.config_overlay = self.config_overlay_folder + "/" + "overlay_" + str(self.instance_id) + ".qcow2"
-
+        self.config_overlay = self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX
         self.call = self.__gen_start_script(address)
-        if self.call == None:
+        if self.call is None:
             raise Exception("address error...")
 
         if type(address) == str:
-            self.emu = usb_emulator(address, 1, verbose_level)
+            self.emu = usb_emulator(address, 1)
         else:
-            self.emu = usb_emulator(address, 0, verbose_level)
-
-        #print self.call
+            self.emu = usb_emulator(address, 0)
 
     def __del__(self):
         if self.alive():
             self.kill()
 
-    # start qemu
     def start(self):
-	self.log_reload()
-        devnull = open(os.devnull, 'wb')
-
-        # print "START"
-        args = filter(None, self.call.split(" "))
-        self.process = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.log_reload()
+        self.process = subprocess.Popen(filter(None, self.call.split(" ")), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(1.0)
-	
-	
-	#try:	
-	#	str(self.process.pid)
-	#except:
-	#	self.start()
-
 
     def alive(self):
-        if self.process == None:
+        if self.process is None:
             return False
 
-        if self.process.poll() == None:
+        if self.process.poll() is None:
             return True
         else:
             return False
-	
-
-
-    def __non_block_read(self, output):
-        fd = output.fileno()
-        fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-        fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
-        try:
-            return output.read()
-        except:
-            return ""
 
     def set_file_name(self, file_name):
-	self.file_name = file_name
-
+        self.file_name = file_name
 
     def log_reload(self):
-	if self.monitor != None:
-             self.monitor.log_reload()
+        if self.monitor is not None:
+            self.monitor.log_reload()
 
+    def log_qemu_output_select(self, file_name, title):
+        try:
+            if self.monitor is None:
+                self.monitor = linux_monitor(self, file_name)
+            return self.monitor.monitor(title)
+        except:
+            return False
 
-    def log_qemu_output_select(self, fileName, title, name):
-	if self.monitor == None:
-	    self.monitor = linux_monitor(self, fileName)
-
-	try:	
-		return self.monitor.monitor(name, title)
-	except:
-		time.sleep(5)
-		return self.monitor.monitor(name, title)
-	
-    # kill qemu
     def kill(self):
         try:
             self.process.stdout.close()
@@ -277,62 +207,31 @@ class qemu:
         except:
             pass
 
-    def check_if_image_corrupted(self, name):
-        match = "Image is corrupt"
+    def check_if_image_corrupted(self):
         fd = select([self.process.stderr], [], [], 0)
         fd = fd[0]
-        #logDebug("msg_" + name, "TRY LOG " + str(fd))
         if len(fd) != 0:
-        #if self.process.stderr.:
-            #print "CORRUPTED " + name
-            self.kill()
-            shutil.copy(self.config_overlay_backup, self.config_overlay_folder + "/" + "overlay_" + str(self.instance_id) + ".qcow2")
-            self.start()
+            self.repair_image()
         else:
             pass
-            #print "OKAY"
-        #fd[0].close()
-        #pass
+            # fd[0].close()
 
-    # reload snapshot without killing qemu
+    def repair_image(self):
+        self.kill()
+        os.remove(self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX)
+        shutil.copy(self.config_overlay_backup,
+                    self.config_overlay_folder + "/" + config.OVERLAY_FILE_PREFIX + str(self.instance_id) + config.OVERLAY_FILE_POSTFIX)
+        self.start()
+
     def reload(self):
-	self.log_reload()
+        self.log_reload()
         if not self.alive():
-            args = filter(None, self.call.split(" "))
-            self.process = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            #print "RELOAD"
+            self.start()
+        try:
+            self.process.stdin.write("\1" + 'c' + "loadvm " + self.config_snapshot + '\n' + "\1" + 'c')
+        except:
+            pass
 
-        self.process.stdin.write("\1" + 'c' + "loadvm " + self.config_snapshot + '\n' + "\1" + 'c')
-
-    # print "\1"+ 'c' + "loadvm " + self.config_snapshot + '\n' + "\1"+ 'c'
-    #time.sleep(1)
-
-    def fire(self, payload, name):
-        #hello = 'usbredirserver 0.6\x00\x00\x00\x00\x00\x00\xc0\x1f@\x00\x00\x00\x00\x00\x00\x9dj\x00\x00\x00\x00\x00uB\xe8h:\x7f\x00\x00\x80\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\xfe\x00\x00\x00'
-
-        logDebug("msg_" + name, "SETUP")
+    def fire(self, payload):
         self.emu.setup_payload(payload)
-        logDebug("msg_" + name, "EXIT SETUP")
-        while True:
-            #	try:
-            logDebug("msg_" + name, "FIRE")
-            if not self.emu.fire(10, 2.4, name):
-                logDebug("msg_" + name, "FIRE RESTART")
-                try:
-                    self.kill()
-                except:
-                    pass
-                try:
-                    self.start()
-                except:
-                    pass
-                #time.sleep(0.25)
-            else:
-                logDebug("msg_" + name, "FIRE EXIT")
-                break
-        #	except:
-        #		time.sleep(0.2)
-        #		logDebug("msg_" + name, "FIRE ERROR")
-
-        logDebug("msg_" + name, "FIRE EXIT")
-
+        return self.emu.execute()
