@@ -11,7 +11,7 @@ vusbf-Framework
 	/_/  \__,_/ /___/___/\___/_/
 
 	A KVM/QEMU based USB-fuzzing framework.
-	Sergej Schumilo, OpenSource Training Spenneberg 2015
+	Sergej Schumilo, OpenSource Security Spenneberg 2015
 	Version: 0.2
 
 GENERAL
@@ -19,6 +19,9 @@ GENERAL
 
 A USB-fuzzer which takes advantage of massive usage of virtual machines and also offers high reproducibility.
 This framework was initially released at Black Hat Europe 2014.
+
+https://www.blackhat.com/docs/eu-14/materials/eu-14-Schumilo-Dont-Trust-Your-USB
+-How-To-Find-Bugs-In-USB-Device-Drivers-wp.pdf
 
 This software is under heavy development. Get a copy of the actual version at github:
 
@@ -51,19 +54,19 @@ QEMU 2.2.x is currently unsupported by vUSBf!
 vUSBf requires some prepared QCOW2-images for fuzzing!
 At first you've to create a QCOW2-image for your virtual machine. You can do this by using the following command:
 
-qemu-img create -f qcow2 vm.qcow2 10G
+	qemu-img create -f qcow2 vm.qcow2 10G
 
 Install your preferred operating system on that image. You've to configure a TTY which is available at the (virtual) serial port.
 
 The next step is to create a backing-file (overlay which contains all of the future delta) and an image which will contain a snapshot of the VM (the size should be larger than your virtual memory you have configured):
 
-qemu-img create -b vm.img -f qcow2 overlay.qcow2
-qemu-img create -f qcow2 ram.qcow2 1G
+	qemu-img create -b vm.img -f qcow2 overlay.qcow2
+	qemu-img create -f qcow2 ram.qcow2 1G
 
 Start your VM with the following command, wait until the kernel is loaded, log in and change the verbosity of printk by entering "echo '7' > /proc/sys/kernel/printk".
 Now you can take a snapshot by entering the QEMU console (press ctrl+a and c) and type savevm <name>. You should start the VM by the following command:
 
-qemu-system-x86_64 --enable-kvm -m 1024 -hdb ram.qcow2 -hda overlay.qcow2 -serial mon:stdio -device nec-usb-xhci -device usb-redir,chardev=usbchardev,debug=0
+	qemu-system-x86_64 --enable-kvm -m 1024 -hdb ram.qcow2 -hda overlay.qcow2 -serial mon:stdio -device nec-usb-xhci -device usb-redir,chardev=usbchardev,debug=0 -chardev socket,server,id=usbchardev,nowait,host=127.0.0.1,port=1336
 
 Create a customized configuration in the "vusbf/configurations/" folder. You'll find there some examples. Modify the following information:
 

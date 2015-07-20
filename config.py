@@ -39,7 +39,7 @@ UNIX_SOCKET_TIMEOUT = 0.5
 TCP_SOCKET_TIMEOUT = 0.75
 # connection to victim timeout
 # (Linux: 0.2 - 0,75 / FreeBSD: 1.25 - 2.0)
-CONNECTION_TO_VICTIM_TIMEOUT = 1.35
+CONNECTION_TO_VICTIM_TIMEOUT = 2.35
 # max redir packet recv (deadlock prevention)
 MAX_PACKETS = 500
 

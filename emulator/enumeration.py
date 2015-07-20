@@ -55,8 +55,8 @@ class enumeration(emulator):
 
         # device descriptor
         if descriptor_request == 0x01:
-            packet_length = scapy_data.length
             extra_payload = self.descriptor[0]
+            packet_length = len(str(extra_payload))
 
         # configuration descriptor
         elif descriptor_request == 0x02:
@@ -84,6 +84,7 @@ class enumeration(emulator):
         scapy_data.HLength = 10 + len(str(extra_payload))
         scapy_data.status = 0
         scapy_data.length = packet_length
+
 
         if extra_payload is None:
             scapy_data.HLength = 10
