@@ -20,8 +20,7 @@ GENERAL
 A USB-fuzzer which takes advantage of massive usage of virtual machines and also offers high reproducibility.
 This framework was initially released at Black Hat Europe 2014.
 
-https://www.blackhat.com/docs/eu-14/materials/eu-14-Schumilo-Dont-Trust-Your-USB
--How-To-Find-Bugs-In-USB-Device-Drivers-wp.pdf
+https://www.blackhat.com/docs/eu-14/materials/eu-14-Schumilo-Dont-Trust-Your-USB-How-To-Find-Bugs-In-USB-Device-Drivers-wp.pdf
 
 This software is under heavy development. Get a copy of the actual version at github:
 
